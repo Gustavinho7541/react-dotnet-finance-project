@@ -1,40 +1,61 @@
-import './App.css';
-import Search from './Components/Search/Search';
-import CardList from './Components/CardList/CardList';
-import { useState } from 'react';
-import { searchCompanies } from './Components/api';
-import { CompanySearch } from './company';
+import "./App.css";
+import Search from "./Components/Search/Search";
+import CardList from "./Components/CardList/CardList";
+import { useState, SyntheticEvent } from "react";
+import { searchCompanies } from "./Components/api";
+
+import ListPortfolio from "./Components/Portfólio/ListPortfolio/ListPortfolio";
 
 function App() {
-  const [search, setSearch] = useState('');
-  const [searchResult, setSearchResult] = useState<CompanySearch[]>([]);
-  const [serverError, setServerError] = useState('');
+  const [search, setSearch] = useState("");
+  const [portfolioValues, setPortfolioValues] = useState<string[]>([]);
+  const [searchResult, setSearchResult] = useState([]);
+  const [serverError, setServerError] = useState("");
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
   };
 
-  const onClick = async () => {
+  const onPortfolioCreate = (e: any) => {
+    e.preventDefault();
+
+    const updatedPortfolio = [
+      ...portfolioValues,
+      e.target[0].value,
+    ];
+
+    setPortfolioValues(updatedPortfolio);
+  };
+
+  const onSearchSubmit = async (e: SyntheticEvent) => {
+    e.preventDefault();
+
     const result = await searchCompanies(search);
 
     if (typeof result === "string") {
       setServerError(result);
     } else {
       setSearchResult(result);
+      setServerError("");
     }
   };
 
   return (
     <div className="App">
-      <Search 
-        onClick={onClick} 
-        search={search} 
-        handleChange={handleChange}
+      <Search
+        onSearchSubmit={onSearchSubmit}
+        search={search}
+        handleSearchChange={handleSearchChange}
       />
 
-      {serverError && <h1>{serverError}</h1>}
+      <ListPortfolio portfolioValues={portfolioValues} />
 
-      <CardList searchResults={searchResult} />
+      <CardList
+        searchResults={searchResult}
+        onPortfolioCreate={onPortfolioCreate}
+      />
+
+      {serverError && <div>Unable to connect to API</div>}
     </div>
   );
 }

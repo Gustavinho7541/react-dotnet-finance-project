@@ -1,24 +1,38 @@
-
-
+import React, { SyntheticEvent } from "react";
 import "./Card.css";
+import { CompanySearch } from "../../company";
+import AddPortfolio from "../Portfólio/AddPortfolio/AddPortfolio";
 
 interface Props {
-  companyName: string;
-  ticker: string;
-  price: number;
+  id: string;
+  searchResult: CompanySearch;
+  onPortfolioCreate: (e: SyntheticEvent) => void;
 }
 
-const Card = ({ companyName, ticker, price }: Props) => {
+const Card: React.FC<Props> = ({
+  searchResult,
+  onPortfolioCreate,
+}) => {
   return (
     <div className="card">
-      <img
-        src="https://akeloo.com.br/wp-content/uploads/2022/03/B3.png"
-        alt="empresa"
-      />
+      <img alt="company logo" />
 
-      <h2>{companyName}</h2>
-      <p>{ticker}</p>
-      <p>${price}</p>
+      <div className="details">
+        <h2>
+          {searchResult.name} ({searchResult.symbol})
+        </h2>
+
+        <p>{searchResult.currency}</p>
+      </div>
+
+      <p className="info">
+        {searchResult.exchangeShortName} - {searchResult.stockExchange}
+      </p>
+
+      <AddPortfolio
+        symbol={searchResult.symbol}
+        onPortfolioCreate={onPortfolioCreate}
+      />
     </div>
   );
 };

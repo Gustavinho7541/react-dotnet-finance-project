@@ -1,22 +1,33 @@
+import React from "react";
 import { CompanySearch } from "../../company";
 import Card from "../Card/Card";
 
 interface Props {
   searchResults: CompanySearch[];
+  onPortfolioCreate: (e: React.SyntheticEvent) => void;
 }
 
-const CardList = ({ companies }: Props) => {
+const CardList: React.FC<Props> = ({
+  searchResults,
+  onPortfolioCreate,
+}) => {
   return (
-    <div>
-      {companies.map((c, i) => (
-        <Card
-          key={i}
-          companyName={c.instrument_name}
-          ticker={c.symbol}
-          price={0}
-        />
-      ))}
-    </div>
+    <>
+      {searchResults.length > 0 ? (
+        searchResults.map((result) => {
+          return (
+            <Card
+              id={result.symbol}
+              key={result.symbol}
+              searchResult={result}
+              onPortfolioCreate={onPortfolioCreate}
+            />
+          );
+        })
+      ) : (
+        <h1>No results</h1>
+      )}
+    </>
   );
 };
 
