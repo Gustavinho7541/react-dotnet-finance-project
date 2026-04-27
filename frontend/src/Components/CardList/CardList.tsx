@@ -2,7 +2,7 @@ import { CompanySearch } from "../../company";
 import Card from "../Card/Card";
 
 interface Props {
-  companies: CompanySearch[];
+  searchResults: CompanySearch[];
 }
 
 const CardList = ({ companies }: Props) => {

@@ -34,7 +34,7 @@ function App() {
 
       {serverError && <h1>{serverError}</h1>}
 
-      <CardList companies={searchResult} />
+      <CardList searchResults={searchResult} />
     </div>
   );
 }
