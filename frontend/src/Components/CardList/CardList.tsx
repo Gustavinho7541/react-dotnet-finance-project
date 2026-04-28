@@ -4,7 +4,7 @@ import Card from "../Card/Card";
 
 interface Props {
   searchResults: CompanySearch[];
-  onPortfolioCreate: (e: React.SyntheticEvent) => void;
+  onPortfolioCreate: (valor: string) => void; // ✅ corrigido
 }
 
 const CardList: React.FC<Props> = ({
@@ -25,7 +25,9 @@ const CardList: React.FC<Props> = ({
           );
         })
       ) : (
-        <h1>No results</h1>
+        <p className="mb-3 mt-3 text-xl font-semibold text-center md:text-xl">
+          No results!
+        </p>
       )}
     </>
   );

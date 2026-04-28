@@ -3,6 +3,7 @@ import Search from "./Components/Search/Search";
 import CardList from "./Components/CardList/CardList";
 import { useState, SyntheticEvent } from "react";
 import { searchCompanies } from "./Components/api";
+import Navbar from "./Components/Navbar/Navbar";
 import ListPortfolio from "./Components/Portfólio/ListPortfolio/ListPortfolio";
 
 function App() {
@@ -27,21 +28,27 @@ function App() {
   };
 
   // ✅ SEARCH (ARRUMADO)
-  const onSearchSubmit = async (e: SyntheticEvent) => {
-    e.preventDefault();
+const onSearchSubmit = async (e: SyntheticEvent) => {
+  e.preventDefault();
 
-    const result = await searchCompanies(search);
+  console.log("Buscando:", search); // 👈 AQUI
 
-    if (typeof result === "string") {
-      setServerError(result);
-    } else {
-      setSearchResult(result);
-      setServerError("");
-    }
-  };
+  const result = await searchCompanies(search);
+
+  console.log("Resultado:", result); // 👈 AQUI
+
+  if (typeof result === "string") {
+    setServerError(result);
+  } else {
+    setSearchResult(result);
+    setServerError("");
+  }
+};
 
   return (
     <div className="App">
+      <Navbar />
+
       <Search
         onSearchSubmit={onSearchSubmit}
         search={search}
