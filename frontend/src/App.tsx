@@ -58,6 +58,8 @@ function App() {
         onPortfolioCreate={onPortfolioCreate}
       />
 
+      
+
       {serverError && <div>Unable to connect to API</div>}
     </div>
   );
