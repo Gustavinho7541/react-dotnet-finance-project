@@ -1,14 +1,23 @@
-import React from 'react'
+import React from "react";
 
 interface Props {
-    portfolioValue: string;
+  portfolioValue: string;
+  onPortfolioDelete: (valor: string) => void;
 }
 
-const CardPortfolio = ({portfoleioValue}: Props) => {
-    return <>
-    <h4>{portfoleioValue}</h4>
-    <button>X</button>
-    </>;
+const CardPortfolio: React.FC<Props> = ({
+  portfolioValue,
+  onPortfolioDelete,
+}) => {
+  return (
+    <div>
+      <span>{portfolioValue}</span>
+
+      <button onClick={() => onPortfolioDelete(portfolioValue)}>
+        Delete
+      </button>
+    </div>
+  );
 };
 
-export default CardPortfolio
+export default CardPortfolio;

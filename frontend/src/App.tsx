@@ -3,7 +3,6 @@ import Search from "./Components/Search/Search";
 import CardList from "./Components/CardList/CardList";
 import { useState, SyntheticEvent } from "react";
 import { searchCompanies } from "./Components/api";
-
 import ListPortfolio from "./Components/Portfólio/ListPortfolio/ListPortfolio";
 
 function App() {
@@ -16,17 +15,18 @@ function App() {
     setSearch(e.target.value);
   };
 
-  const onPortfolioCreate = (e: any) => {
-    e.preventDefault();
-
-    const updatedPortfolio = [
-      ...portfolioValues,
-      e.target[0].value,
-    ];
-
-    setPortfolioValues(updatedPortfolio);
+  // ✅ ADD
+  const onPortfolioCreate = (valor: string) => {
+    setPortfolioValues([...portfolioValues, valor]);
   };
 
+  // ✅ DELETE (CORRETO)
+  const onPortfolioDelete = (valor: string) => {
+    const updated = portfolioValues.filter((item) => item !== valor);
+    setPortfolioValues(updated);
+  };
+
+  // ✅ SEARCH (ARRUMADO)
   const onSearchSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
 
@@ -48,7 +48,10 @@ function App() {
         handleSearchChange={handleSearchChange}
       />
 
-      <ListPortfolio portfolioValues={portfolioValues} />
+      <ListPortfolio
+        portfolioValues={portfolioValues}
+        onPortfolioDelete={onPortfolioDelete}
+      />
 
       <CardList
         searchResults={searchResult}

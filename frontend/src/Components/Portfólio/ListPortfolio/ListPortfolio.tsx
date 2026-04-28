@@ -3,25 +3,23 @@ import CardPortfolio from "../CardPortfolio/CardPortfolio";
 
 interface Props {
   portfolioValues: string[];
+  onPortfolioDelete: (valor: string) => void;
 }
 
-const ListPortfolio: React.FC<Props> = ({ portfolioValues }) => {
+const ListPortfolio: React.FC<Props> = ({
+  portfolioValues,
+  onPortfolioDelete,
+}) => {
   return (
-    <>
-      <h3>My Portfolio</h3>
-
-      <ul>
-        {portfolioValues &&
-          portfolioValues.map((portfolioValue, index) => {
-            return (
-              <CardPortfolio
-                key={index}
-                portfolioValue={portfolioValue}
-              />
-            );
-          })}
-      </ul>
-    </>
+    <div>
+      {portfolioValues.map((item) => (
+        <CardPortfolio
+          key={item}
+          portfolioValue={item}
+          onPortfolioDelete={onPortfolioDelete}
+        />
+      ))}
+    </div>
   );
 };
 
