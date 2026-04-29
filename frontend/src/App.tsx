@@ -16,34 +16,36 @@ function App() {
     setSearch(e.target.value);
   };
 
-  // ✅ ADD
+  // ADD
   const onPortfolioCreate = (valor: string) => {
     setPortfolioValues([...portfolioValues, valor]);
   };
 
-  // ✅ DELETE (CORRETO)
+  // DELETE
   const onPortfolioDelete = (valor: string) => {
     const updated = portfolioValues.filter((item) => item !== valor);
     setPortfolioValues(updated);
   };
 
-  // ✅ SEARCH (ARRUMADO)
-const onSearchSubmit = async (e: SyntheticEvent) => {
-  e.preventDefault();
+  // SEARCH
+  const onSearchSubmit = async (e: SyntheticEvent) => {
+    e.preventDefault();
 
-  console.log("Buscando:", search); // 👈 AQUI
+    try {
+      const result = await searchCompanies(search);
 
-  const result = await searchCompanies(search);
-
-  console.log("Resultado:", result); // 👈 AQUI
-
-  if (typeof result === "string") {
-    setServerError(result);
-  } else {
-    setSearchResult(result);
-    setServerError("");
-  }
-};
+      if (typeof result === "string") {
+        setServerError(result);
+        setSearchResult([]);
+      } else {
+        setSearchResult(result);
+        setServerError("");
+      }
+    } catch (error) {
+      console.error("Erro na busca:", error);
+      setServerError("Erro ao buscar dados");
+    }
+  };
 
   return (
     <div className="App">
@@ -64,8 +66,6 @@ const onSearchSubmit = async (e: SyntheticEvent) => {
         searchResults={searchResult}
         onPortfolioCreate={onPortfolioCreate}
       />
-
-      
 
       {serverError && <div>Unable to connect to API</div>}
     </div>
