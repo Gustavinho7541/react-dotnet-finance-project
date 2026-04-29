@@ -7,6 +7,7 @@ export interface CompanySearch {
 }
 
 export interface CompanyProfile {
+    name: ReactNode;
     symbol: string;
     price: number;
     beta: number;
