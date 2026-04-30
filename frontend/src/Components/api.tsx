@@ -1,32 +1,31 @@
 import axios from "axios";
+import { CompanyKey } from "../company"; // 👈 IMPORTANTE
 
 const API_KEY = "SUA_API_KEY_AQUI";
 
 // 🔍 SEARCH
 export const searchCompanies = async (query: string) => {
   try {
-    const response = await axios.get(
+    const response = await axios.get<{ data: CompanyKey[] }>(
       `https://api.twelvedata.com/symbol_search?symbol=${query}&apikey=${API_KEY}`
     );
 
-    return response.data?.data || [];
+    return response.data.data || [];
   } catch (error) {
     console.log("Erro:", error);
     return [];
   }
 };
 
-// 📊 PROFILE SIMULADO (usando dados disponíveis)
-export const getCompanyProfile = async (ticker: string) => {
+// 📊 KEY METRICS (adaptado)
+export const getKeyMetrics = async (ticker: string) => {
   try {
-    // 🔎 pega info básica
-    const searchRes = await axios.get(
+    const searchRes = await axios.get<{ data: CompanyKey[] }>(
       `https://api.twelvedata.com/symbol_search?symbol=${ticker}&apikey=${API_KEY}`
     );
 
-    const company = searchRes.data?.data[0];
+    const company = searchRes.data.data[0];
 
-    // 💰 pega preço
     const priceRes = await axios.get(
       `https://api.twelvedata.com/price?symbol=${ticker}&apikey=${API_KEY}`
     );
@@ -36,7 +35,6 @@ export const getCompanyProfile = async (ticker: string) => {
       name: company?.instrument_name,
       exchange: company?.exchange,
       price: priceRes.data?.price,
-      // não existe no plano grátis:
       industry: "N/A",
       website: "N/A",
     };

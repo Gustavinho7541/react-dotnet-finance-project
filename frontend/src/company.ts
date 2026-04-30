@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 export interface CompanySearch {
     symbol: string;
     name: string;
@@ -159,6 +161,14 @@ export interface CompanyCashFlow {
 }
 
 export interface CompanyKeyMetrics {
+    marketCapTTM(marketCapTTM: any): unknown;
+    currentRatioTTM(currentRatioTTM: any): unknown;
+    returnOnTangibleAssetsTTM(returnOnTangibleAssetsTTM: any): unknown;
+    freeCashFlowPerShareTTM(freeCashFlowPerShareTTM: any): unknown;
+    bookValuePerShareTTM(bookValuePerShareTTM: any): unknown;
+    dividendYieldTTM(dividendYieldTTM: any): unknown;
+    capexPerShareTTM(capexPerShareTTM: any): unknown;
+    grahamNumberTTM(grahamNumberTTM: any): unknown;
     symbol: string;
     date: string;
     revenuePerShare: number;
@@ -223,4 +233,10 @@ export interface ApiResponse<T> {
     data: T;
     isLoading: boolean;
     error: string | null;
+}
+
+export interface CompanyKey {
+  symbol: string;
+  instrument_name: string;
+  exchange: string;
 }

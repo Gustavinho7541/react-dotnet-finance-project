@@ -1,31 +1,18 @@
-import React from "react";
-import { TestDataCompany } from "../Table/testData";
+type Props = {
+  config: {
+    label: string;
+    render: (data: any) => any;
+    subTitle?: string;
+  }[];
+  data: any;
+};
 
-type Props = {};
-
-const data = TestDataCompany[0];
-
-type Company = typeof data;
-
-const config = [
-  {
-    label: "Company Name",
-    render: (company: Company) => company.companyName,
-    subTitle: "This is the company name",
-  },
-  {
-    label: "Company Name",
-    render: (company: Company) => company.companyName,
-    subTitle: "This is the company name",
-  },
-];
-
-const RatioList = (props: Props) => {
+const RatioList = ({ config, data }: Props) => {
   const renderedRows = config.map((row, index) => {
     return (
       <li key={index} className="py-3 sm:py-4">
         <div className="flex items-center justify-between space-x-4">
-          
+
           <div className="flex-1 min-w-0">
             <p className="text-sm font-medium text-gray-900 truncate">
               {row.label}
