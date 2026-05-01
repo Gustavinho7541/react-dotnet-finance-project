@@ -1,65 +1,37 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import Table from "../Table/Table";
 import { getIncomeStatement } from "../api";
 
-// ✅ tipo compatível com seu mock
-type IncomeStatementSimple = {
+type Income = {
   date: string;
   revenue: number;
   netIncome: number;
 };
 
-// ✅ config alinhado com o tipo correto
-const configs = [
-  {
-    label: "Date",
-    render: (c: IncomeStatementSimple) => c.date,
-  },
-  {
-    label: "Revenue",
-    render: (c: IncomeStatementSimple) =>
-      formatLargeMonetaryNumber(c.revenue),
-  },
-  {
-    label: "Net Income",
-    render: (c: IncomeStatementSimple) =>
-      formatLargeMonetaryNumber(c.netIncome),
-  },
+const config = [
+  { label: "Date", render: (c: Income) => c.date },
+  { label: "Revenue", render: (c: Income) => formatMoney(c.revenue) },
+  { label: "Net Income", render: (c: Income) => formatMoney(c.netIncome) },
 ];
 
 const IncomeStatement = () => {
   const ticker = useOutletContext<string>();
-
-  const [incomeStatement, setIncomeStatement] = useState<
-    IncomeStatementSimple[] | null
-  >(null);
+  const [data, setData] = useState<Income[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
-      if (!ticker) return;
-
       const result = await getIncomeStatement(ticker);
-      setIncomeStatement(result);
+      setData(result);
     };
 
     fetchData();
   }, [ticker]);
 
-  return (
-    <>
-      {incomeStatement ? (
-        <Table config={configs} data={incomeStatement} />
-      ) : (
-        <div>Loading...</div>
-      )}
-    </>
-  );
+  return <Table config={config} data={data} />;
 };
 
 export default IncomeStatement;
 
-// ✅ helpers simples
-function formatLargeMonetaryNumber(value: number) {
-  return "$ " + value?.toLocaleString();
-}
+const formatMoney = (v: number) =>
+  "$ " + v.toLocaleString();

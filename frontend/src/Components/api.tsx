@@ -1,5 +1,5 @@
 import axios from "axios";
-import { CompanyIncomeStatement, CompanyKey } from "../company";
+import { CompanyKey } from "../company";
 
 const API_KEY = "SUA_API_KEY_AQUI";
 const BASE_URL = "https://api.twelvedata.com";
@@ -18,7 +18,6 @@ export const searchCompanies = async (query: string) => {
   }
 };
 
-
 // 📊 KEY METRICS
 export const getKeyMetrics = async (ticker: string) => {
   try {
@@ -31,18 +30,6 @@ export const getKeyMetrics = async (ticker: string) => {
     const priceRes = await axios.get(
       `${BASE_URL}/price?symbol=${ticker}&apikey=${API_KEY}`
     );
-
-    export const getBalanceSheet = async (query: string) => {
-  try {
-    const data = await axios.get<CompanyIncomeStatement[]>(
-      `${ticker}&apikey=${API_KEY}`
-    );
-
-    return data;
-  } catch (error message: ", error.message);
-    
-    }
-  };
 
     return {
       symbol: company?.symbol,
@@ -70,6 +57,24 @@ export const getIncomeStatement = async (ticker: string) => {
       date: "2023",
       revenue: 800000,
       netIncome: 150000,
+    },
+  ];
+};
+
+// 📊 BALANCE SHEET (MOCK)
+export const getBalanceSheet = async (ticker: string) => {
+  return [
+    {
+      date: "2024",
+      totalAssets: 5000000,
+      totalLiabilities: 2000000,
+      totalEquity: 3000000,
+    },
+    {
+      date: "2023",
+      totalAssets: 4500000,
+      totalLiabilities: 1800000,
+      totalEquity: 2700000,
     },
   ];
 };

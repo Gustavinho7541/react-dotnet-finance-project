@@ -1,60 +1,58 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { FaHome } from "react-icons/fa";
+import { Link, useLocation } from "react-router-dom";
+import { FaBuilding, FaChartLine, FaBalanceScale, FaHome } from "react-icons/fa";
 
 const Sidebar = () => {
+  const location = useLocation();
+
+  const menu = [
+    {
+      path: "company-profile",
+      label: "Company Profile",
+      icon: <FaBuilding />,
+    },
+    {
+      path: "income-statement",
+      label: "Income Statement",
+      icon: <FaChartLine />,
+    },
+    {
+      path: "balance-sheet",
+      label: "Balance Sheet",
+      icon: <FaBalanceScale />,
+    },
+      {
+      path: "cashflow-statement",
+      label: "cashflow Statement",
+      icon: <FaHome />,
+    },
+  ];
+
   return (
-    <nav className="block py-4 px-6 top-0 bottom-0 w-64 bg-white shadow-xl left-0 absolute flex flex-col md:z-10 z-50 transition-all duration-300 ease-in-out transform md:translate-x-0 -translate-x-full">
-      
-      <div className="flex flex-col w-full h-full overflow-y-auto">
+    <div className="w-64 bg-white shadow-md min-h-screen p-4">
+      <ul className="space-y-2">
+        {menu.map((item) => {
+          const isActive = location.pathname.includes(item.path);
 
-        {/* Company Profile */}
-        <Link
-          to="company-profile"
-          className="flex items-center text-gray-600 text-sm uppercase font-bold py-3 no-underline"
-        >
-          <FaHome />
-          <span className="ml-3">Company Profile</span>
-        </Link>
-
-        {/* Income Statement */}
-        <Link
-          to="income-statement"
-          className="flex items-center text-gray-600 text-sm uppercase font-bold py-3 no-underline"
-        >
-          <FaHome />
-          <span className="ml-3">Income Statement</span>
-        </Link>
-
-        {/* Balance Sheet */}
-        <Link
-          to="balance-sheet"
-          className="flex items-center text-gray-600 text-sm uppercase font-bold py-3 no-underline"
-        >
-          <FaHome />
-          <span className="ml-3">Balance Sheet</span>
-        </Link>
-
-        {/* Cashflow */}
-        <Link
-          to="cashflow-statement"
-          className="flex items-center text-gray-600 text-sm uppercase font-bold py-3 no-underline"
-        >
-          <FaHome />
-          <span className="ml-3">Cashflow Statement</span>
-        </Link>
-
-        {/* Dividend */}
-        <Link
-          to="historical-dividend"
-          className="flex items-center text-gray-600 text-sm uppercase font-bold py-3 no-underline"
-        >
-          <FaHome />
-          <span className="ml-3">Historical Dividend</span>
-        </Link>
-
-      </div>
-    </nav>
+          return (
+            <li key={item.path}>
+              <Link
+                to={item.path}
+                className={`flex items-center p-3 rounded-md transition
+                ${
+                  isActive
+                    ? "bg-blue-500 text-white"
+                    : "text-gray-700 hover:bg-gray-100"
+                }`}
+              >
+                <span className="text-lg">{item.icon}</span>
+                <span className="ml-3">{item.label}</span>
+              </Link>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
   );
 };
 

@@ -1,34 +1,49 @@
-
 type Props = {
-    config: any;
-    data: any;
+  config: {
+    label: string;
+    render: (data: any) => any;
+  }[];
+  data: any[];
 };
 
+const Table = ({ config, data }: Props) => {
 
+  return (
+    <div className="bg-white shadow rounded-lg p-4 overflow-x-auto">
+      
+      <table className="min-w-full divide-y divide-gray-200">
 
-const Table = ({config, data}: Props) => {
-   const renderedRows = data.map((company: any) => {
-    return (
-        <tr key={company.cik}>
-          {config.map((val: any) =>{
-          return <td className="p-3">{val.render(company)}</td>
-          } )}
-            
-        </tr>
-    )
-   })
-   const rendereHeaders = config.map((config: any) => {
-    return (
-        <th className="p-4 text-left text-xs font-medium text-fray-500 uppercase tacking-wider">
-            key={config.label}
-        </th>
-    )
-   })
-    return <div className="bg-white shadow rounted=lg p-4 smp-6 xl:p-8">
-        <table>
-         <thead   className="min-w-full divide-gray 200 m-5">{rendereHeaders}</thead>
-        <tbody>{renderedRows}</tbody>
-        </table></div>
+        {/* HEADER */}
+        <thead className="bg-gray-50">
+          <tr>
+            {config.map((col, index) => (
+              <th
+                key={index}
+                className="px-4 py-2 text-left text-xs font-bold text-gray-500 uppercase"
+              >
+                {col.label}
+              </th>
+            ))}
+          </tr>
+        </thead>
+
+        {/* BODY */}
+        <tbody className="divide-y divide-gray-200">
+          {data.map((row, rowIndex) => (
+            <tr key={rowIndex}>
+              {config.map((col, colIndex) => (
+                <td key={colIndex} className="px-4 py-2">
+                  {col.render(row)}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+
+      </table>
+
+    </div>
+  );
 };
 
 export default Table;

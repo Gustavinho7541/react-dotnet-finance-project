@@ -111,6 +111,10 @@ export interface CompanyIncomeStatement {
 }
 
 export interface CompanyBalanceSheet {
+    otherCurrentLiabilities(otherCurrentLiabilities: any): unknown;
+    otherLiabilities(otherLiabilities: any): unknown;
+    totalStockholdersEquity(totalStockholdersEquity: any): unknown;
+    retainedEarnings(retainedEarnings: any): unknown;
     date: string;
     symbol: string;
     reportedCurrency: string;
@@ -236,6 +240,7 @@ export interface ApiResponse<T> {
 }
 
 export interface CompanyKey {
+  [x: string]: string;
   symbol: string;
   instrument_name: string;
   exchange: string;
