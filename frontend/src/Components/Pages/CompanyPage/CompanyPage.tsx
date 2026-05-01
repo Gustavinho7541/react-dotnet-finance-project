@@ -3,6 +3,7 @@ import { useParams, Outlet } from "react-router-dom";
 
 import { getKeyMetrics } from "../../api";
 import Sidebar from "../../Sidebar/Sidebar";
+import Tile from "../../Tile/Tile";
 
 type CompanySimple = {
   symbol: string;
@@ -18,14 +19,14 @@ const CompanyPage = () => {
   const [company, setCompany] = useState<CompanySimple | null>(null);
 
   useEffect(() => {
-    const getProfileInit = async () => {
+    const fetchCompany = async () => {
       if (!ticker) return;
 
       const result = await getKeyMetrics(ticker);
       setCompany(result);
     };
 
-    getProfileInit();
+    fetchCompany();
   }, [ticker]);
 
   if (!company) return <div className="p-6">Carregando...</div>;
@@ -41,33 +42,35 @@ const CompanyPage = () => {
       {/* CONTEÚDO */}
       <div className="flex-1 p-6">
 
-        {/* 🔥 REMOVIDO HEADER AZUL */}
+        {/* 🔥 TÍTULO DISCRETO */}
+        <h1 className="text-2xl font-bold mb-4 text-gray-800">
+          {company.name}
+        </h1>
 
-        {/* CARDS */}
+        {/* 🔥 TILES (SUBSTITUI OS CARDS FEIOS) */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
 
-          <Card title="Symbol" value={company.symbol} />
-          
-          {/* 👇 só mostra se tiver dado */}
-          {company.industry !== "N/A" && (
-            <Card title="Industry" value={company.industry} />
-          )}
+          <Tile title="Company Profile" subTitle={company.symbol} />
 
-          {company.exchange && (
-            <Card title="Exchange" value={company.exchange} />
-          )}
+          <Tile
+            title="Price"
+            subTitle={company.price || "-"}
+          />
 
-          {company.price && (
-            <Card title="Price" value={company.price} />
-          )}
+          <Tile
+            title="Sector"
+            subTitle={
+              company.industry !== "N/A"
+                ? company.industry
+                : "-"
+            }
+          />
 
-          {company.website !== "N/A" && (
-            <Card title="Website" value={company.website} />
-          )}
+          <Tile title="DCF" subTitle="N/A" />
 
         </div>
 
-        {/* CONTEÚDO (Income / Balance / Profile) */}
+        {/* 🔥 CONTEÚDO (Income / Balance / etc) */}
         <div className="bg-white p-4 rounded shadow">
           <Outlet context={ticker} />
         </div>
@@ -76,12 +79,5 @@ const CompanyPage = () => {
     </div>
   );
 };
-
-const Card = ({ title, value }: any) => (
-  <div className="bg-white p-4 rounded shadow">
-    <h5 className="text-xs font-bold uppercase text-gray-500">{title}</h5>
-    <p className="text-lg font-semibold text-gray-800">{value}</p>
-  </div>
-);
 
 export default CompanyPage;

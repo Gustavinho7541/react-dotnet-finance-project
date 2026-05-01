@@ -7,6 +7,7 @@ import IncomeStatement from "../IncomeStatement/IncomeStatement";
 import SearchPage from "../Pages/SearchPage/SearchPage";
 import DesignPage from "../Pages/DesignGuide/DesignPage";
 import BalanceSheet from "../BalanceSheet/BalanceSheet";
+import CashFlowStatement from "../CashflowStatement/CashFlowStatement";
 
 export const router = createBrowserRouter([
     {

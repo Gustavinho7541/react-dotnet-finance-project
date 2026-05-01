@@ -78,3 +78,28 @@ export const getBalanceSheet = async (ticker: string) => {
     },
   ];
 };
+
+export const getCashflow = async (ticker: string) => {
+  return [
+    {
+      date: "2024",
+      operatingCashFlow: 500000,
+      netCashUsedForInvestingActivites: -200000,
+      netCashUsedProvidedByFinancingActivities: 100000,
+      cashAtEndOfPeriod: 300000,
+      capitalExpenditure: -150000,
+      commonStockIssued: 50000,
+      freeCashFlow: 350000,
+    },
+    {
+      date: "2023",
+      operatingCashFlow: 400000,
+      netCashUsedForInvestingActivites: -150000,
+      netCashUsedProvidedByFinancingActivities: 80000,
+      cashAtEndOfPeriod: 250000,
+      capitalExpenditure: -120000,
+      commonStockIssued: 30000,
+      freeCashFlow: 280000,
+    },
+  ];
+};
