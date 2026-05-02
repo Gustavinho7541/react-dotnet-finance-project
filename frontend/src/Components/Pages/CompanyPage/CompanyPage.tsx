@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Outlet } from "react-router-dom";
-import { getKeyMetrics } from "../../api";
+import { getKeyMetrics } from "../../../api";
 import Sidebar from "../../Sidebar/Sidebar";
 import Tile from "../../Tile/Tile";
 import CompFinder from "../../CompFinder/CompFinder";
+import TenKFinder from "../../TenKFinder/TenKFinder";
 
 const CompanyPage = () => {
   const { ticker } = useParams();
@@ -43,6 +44,7 @@ const CompanyPage = () => {
           <Tile title="DCF" subTitle="-" />
           <Tile title="Market Cap" subTitle={company.marketCap || "-"} />
           <CompFinder ticker={company.symbol} />
+          <TenKFinder ticker={company.symbol} />
         </div>
 
         {/* CONTEÚDO DAS ROTAS */}

@@ -1,5 +1,5 @@
 import React, { SyntheticEvent, useState } from "react";
-import { searchCompanies } from "../../api";
+import { searchCompanies } from "../../../api";
 import { CompanySearch } from "../../../company";
 import Search from "../../Search/Search";
 import ListPortfolio from "../../Portfólio/ListPortfolio/ListPortfolio";

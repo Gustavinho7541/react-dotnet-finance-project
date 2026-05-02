@@ -1,5 +1,5 @@
 import axios from "axios";
-import { CompanyKey } from "../company";
+import { CompanyKey } from "./company";
 
 const API_KEY = "SUA_API_KEY_AQUI";
 const BASE_URL = "https://api.twelvedata.com";
@@ -126,5 +126,27 @@ export const getCompData = async (ticker: string) => {
   } catch (error: any) {
     console.log("Erro getCompData:", error.message);
     return null;
+  }
+};
+
+// 📄 10-K (MOCK - SEC Filing)
+export const getTenK = async (ticker: string) => {
+  try {
+    // 🔥 MOCK (igual você fez nos outros)
+    return [
+      {
+        symbol: ticker,
+        fillingDate: "2024-01-01",
+        finalLink: "https://www.sec.gov",
+      },
+      {
+        symbol: ticker,
+        fillingDate: "2023-01-01",
+        finalLink: "https://www.sec.gov",
+      },
+    ];
+  } catch (error: any) {
+    console.log("Erro getTenK:", error.message);
+    return [];
   }
 };

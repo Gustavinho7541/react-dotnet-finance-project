@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import Table from "../Table/Table";
-import { getCashflow } from "../api";
+import { getCashflow } from "../../api";
 import Spinner from "../Spinner/Spinner";
 
 // 👇 tipo simplificado (igual você fez nos outros)

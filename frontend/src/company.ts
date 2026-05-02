@@ -255,3 +255,9 @@ export interface CompanyCompData {
   website: string;
   peersList: string[]; // ✅ ADICIONA ISSO
 }
+
+export interface CompanyTenK {
+  symbol: string;
+  fillingDate: string;
+  finalLink: string;
+}

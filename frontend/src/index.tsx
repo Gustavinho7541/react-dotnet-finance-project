@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import { searchCompanies } from './Components/api';
+import { searchCompanies } from './api';
 import { router } from "./Components/Routes/Routes";
 import { RouterProvider } from 'react-router-dom';
 

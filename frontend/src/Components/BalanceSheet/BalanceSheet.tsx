@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
-import { getBalanceSheet } from "../api";
+import { getBalanceSheet } from "../../api";
 import RatioList from "../RadioList/RadioList";
 import Spinner from "../Spinner/Spinner";
 import "../Spinner/Spinner.css";

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { CompanyCompData } from "../../company";
-import { getCompData } from "../api";
+import { getCompData } from "../../api";
 import CompFinderItem from "../CompFinder/CompFinderItem/CompFinderItem";
 
 type Props = {
