@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
-import { CompanyBalanceSheet } from "../../company";
 import { getBalanceSheet } from "../api";
 import RatioList from "../RadioList/RadioList";
+import Spinner from "../Spinner/Spinner";
+import "../Spinner/Spinner.css";
 
-// 👇 versão simplificada (igual você fez no Income)
+// 👇 versão simplificada
 type BalanceSheetSimple = {
   totalAssets?: number;
   totalCurrentAssets?: number;
@@ -77,21 +78,20 @@ const BalanceSheet = () => {
 
       const result = await getBalanceSheet(ticker);
 
-      // 👇 pegando o primeiro item (igual Income)
-      setBalanceSheet(result?.[0]);
+      setBalanceSheet(result?.[0] || null);
     };
 
     fetchData();
   }, [ticker]);
 
   return (
-    <>
+    <div className="p-2">
       {balanceSheet ? (
         <RatioList config={config} data={balanceSheet} />
       ) : (
-        <div className="p-4">Loading...</div>
+        <Spinner />
       )}
-    </>
+    </div>
   );
 };
 

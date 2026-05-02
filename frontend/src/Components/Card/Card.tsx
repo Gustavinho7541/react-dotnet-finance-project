@@ -1,45 +1,28 @@
 import React from "react";
-import { CompanySearch } from "../../company";
-import AddPortfolio from "../Portfólio/AddPortfolio/AddPortfolio";
-import { Link } from "react-router";
+import { useOutletContext } from "react-router-dom";
+import Spinner from "../Spinner/Spinner"; // ✅ IMPORTANTE
 
-interface Props {
-  id: string;
-  searchResult: CompanySearch;
-  onPortfolioCreate: (valor: string) => void;
-}
+const CompanyProfile = () => {
+  const ticker = useOutletContext<string>();
 
-const Card: React.FC<Props> = ({
-  id,
-  searchResult,
-  onPortfolioCreate,
-}) => {
   return (
-    <div
-      className="flex flex-col md:flex-row items-center justify-between w-full p-6 mb-4 bg-white shadow-md rounded-xl border hover:shadow-lg transition"
-    >
-      {/* Nome */}
-      <div className="text-center md:text-left">
-        <Link to={`/company/${searchResult.symbol}/company-profile`} className="font-bold text-lg text-gray-800">
-          {searchResult.name} ({searchResult.symbol})
-        </Link>
-        <p className="text-gray-500">{searchResult.currency}</p>
-      </div>
+    <div className="p-2">
 
-      {/* Exchange */}
-      <p className="font-semibold text-gray-600 mt-2 md:mt-0">
-        {searchResult.exchangeShortName} - {searchResult.stockExchange}
+      <h2 className="text-lg font-semibold mb-2">
+        Company Profile ({ticker})
+      </h2>
+
+      <p className="text-sm text-gray-700">
+        This section shows basic information about the company. Use the tabs
+        on the left to explore financial data like income statement, balance
+        sheet, and cash flow.
       </p>
 
-      {/* Botão */}
-      <div className="mt-3 md:mt-0">
-        <AddPortfolio
-          symbol={searchResult.symbol}
-          onPortfolioCreate={onPortfolioCreate}
-        />
-      </div>
+      {/* ✅ AGORA FUNCIONA */}
+      <Spinner />
+
     </div>
   );
 };
 
-export default Card;
+export default CompanyProfile;

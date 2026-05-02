@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import Table from "../Table/Table";
 import { getIncomeStatement } from "../api";
+import Spinner from "../Spinner/Spinner"; // ✅ IMPORTAR
 
 type Income = {
   date: string;
@@ -21,6 +22,8 @@ const IncomeStatement = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      if (!ticker) return;
+
       const result = await getIncomeStatement(ticker);
       setData(result);
     };
@@ -28,7 +31,15 @@ const IncomeStatement = () => {
     fetchData();
   }, [ticker]);
 
-  return <Table config={config} data={data} />;
+  return (
+    <>
+      {data.length > 0 ? (
+        <Table config={config} data={data} />
+      ) : (
+        <Spinner />
+      )}
+    </>
+  );
 };
 
 export default IncomeStatement;

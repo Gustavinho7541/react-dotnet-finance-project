@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import Table from "../Table/Table";
 import { getCashflow } from "../api";
+import Spinner from "../Spinner/Spinner";
 
 // 👇 tipo simplificado (igual você fez nos outros)
 type CompanyCashFlow = {
@@ -77,7 +78,7 @@ const CashFlowStatement = () => {
       {cashflowData && cashflowData.length > 0 ? (
         <Table config={config} data={cashflowData} />
       ) : (
-        <div className="p-4">No results</div>
+        <Spinner />
       )}
     </>
   );

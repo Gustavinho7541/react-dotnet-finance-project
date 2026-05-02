@@ -4,6 +4,7 @@ import { useParams, Outlet } from "react-router-dom";
 import { getKeyMetrics } from "../../api";
 import Sidebar from "../../Sidebar/Sidebar";
 import Tile from "../../Tile/Tile";
+import Spinner from "../../Spinner/Spinner"; // ✅ IMPORTADO
 
 type CompanySimple = {
   symbol: string;
@@ -23,13 +24,23 @@ const CompanyPage = () => {
       if (!ticker) return;
 
       const result = await getKeyMetrics(ticker);
-      setCompany(result);
+
+      if (result) {
+        setCompany(result);
+      }
     };
 
     fetchCompany();
   }, [ticker]);
 
-  if (!company) return <div className="p-6">Carregando...</div>;
+  // ✅ LOADING CONTROLADO
+  if (!company) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <Spinner />
+      </div>
+    );
+  }
 
   return (
     <div className="flex min-h-screen bg-gray-100">
@@ -42,12 +53,12 @@ const CompanyPage = () => {
       {/* CONTEÚDO */}
       <div className="flex-1 p-6">
 
-        {/* 🔥 TÍTULO DISCRETO */}
+        {/* TÍTULO */}
         <h1 className="text-2xl font-bold mb-4 text-gray-800">
           {company.name}
         </h1>
 
-        {/* 🔥 TILES (SUBSTITUI OS CARDS FEIOS) */}
+        {/* TILES */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
 
           <Tile title="Company Profile" subTitle={company.symbol} />
@@ -70,7 +81,7 @@ const CompanyPage = () => {
 
         </div>
 
-        {/* 🔥 CONTEÚDO (Income / Balance / etc) */}
+        {/* CONTEÚDO DINÂMICO */}
         <div className="bg-white p-4 rounded shadow">
           <Outlet context={ticker} />
         </div>
