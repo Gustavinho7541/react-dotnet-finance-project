@@ -3,6 +3,7 @@ import { useParams, Outlet } from "react-router-dom";
 import { getKeyMetrics } from "../../api";
 import Sidebar from "../../Sidebar/Sidebar";
 import Tile from "../../Tile/Tile";
+import CompFinder from "../../CompFinder/CompFinder";
 
 const CompanyPage = () => {
   const { ticker } = useParams();
@@ -40,6 +41,8 @@ const CompanyPage = () => {
           <Tile title="Price" subTitle={company.price || "-"} />
           <Tile title="Sector" subTitle={company.industry !== "N/A" ? company.industry : "-"} />
           <Tile title="DCF" subTitle="-" />
+          <Tile title="Market Cap" subTitle={company.marketCap || "-"} />
+          <CompFinder ticker={company.symbol} />
         </div>
 
         {/* CONTEÚDO DAS ROTAS */}

@@ -253,4 +253,5 @@ export interface CompanyCompData {
   sector: string;
   industry: string;
   website: string;
+  peersList: string[]; // ✅ ADICIONA ISSO
 }

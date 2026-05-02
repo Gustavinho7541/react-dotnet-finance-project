@@ -104,3 +104,27 @@ export const getCashflow = async (ticker: string) => {
     
   ];
 };
+
+// 📊 COMPANY COMPLETE DATA (PROFILE + EXTRA INFO)
+export const getCompData = async (ticker: string) => {
+  try {
+    const searchRes = await axios.get<{ data: CompanyKey[] }>(
+      `${BASE_URL}/symbol_search?symbol=${ticker}&apikey=${API_KEY}`
+    );
+
+    const company = searchRes.data.data[0];
+
+    return {
+      symbol: company?.symbol || "-",
+      name: company?.instrument_name || "-",
+      description: "No description available",
+      sector: "N/A",
+      industry: "N/A",
+      website: "N/A",
+      peersList: ["AAPL", "MSFT", "GOOGL"], // ✅ MOCK
+    };
+  } catch (error: any) {
+    console.log("Erro getCompData:", error.message);
+    return null;
+  }
+};
