@@ -1,7 +1,7 @@
 import React from "react";
-import Table from "../../Table/Table";
-import RatioList from "../../RadioList/RadioList";
-import { TestDataCompany, testIncomeStatementData } from "../../Table/testData";
+import Table from "../../Components/Table/Table";
+import RatioList from "../../Components/RadioList/RadioList";
+import { TestDataCompany, testIncomeStatementData } from "../../Components/Table/testData";
 
 type Props = {};
 const data = TestDataCompany;

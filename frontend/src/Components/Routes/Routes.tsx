@@ -1,11 +1,11 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "../../App";
-import HomePage from "../Pages/HomePage/HomePage";
-import CompanyPage from "../Pages/CompanyPage/CompanyPage";
+import HomePage from "../../Pages/HomePage/HomePage";
+import CompanyPage from "../../Pages/CompanyPage/CompanyPage";
 import CompanyProfile from "../CompanyProfile/CompanyProfile";
 import IncomeStatement from "../IncomeStatement/IncomeStatement";
-import SearchPage from "../Pages/SearchPage/SearchPage";
-import DesignPage from "../Pages/DesignGuide/DesignPage";
+import SearchPage from "../../Pages/SearchPage/SearchPage";
+import DesignPage from "../../Pages/DesignGuide/DesignPage";
 import BalanceSheet from "../BalanceSheet/BalanceSheet";
 import CashFlowStatement from "../CashflowStatement/CashFlowStatement";
 

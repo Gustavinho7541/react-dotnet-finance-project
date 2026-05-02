@@ -1,82 +1,57 @@
 import React, { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
-import Table from "../Table/Table";
 import { getCashflow } from "../../api";
+import Table from "../Table/Table";
 import Spinner from "../Spinner/Spinner";
+import { formatLargeMonetaryNumber } from "../../Helpers/NumberFormating";
 
-// 👇 tipo simplificado (igual você fez nos outros)
-type CompanyCashFlow = {
+type CashFlow = {
   date: string;
-  operatingCashFlow?: number;
-  netCashUsedForInvestingActivites?: number;
-  netCashUsedProvidedByFinancingActivities?: number;
-  cashAtEndOfPeriod?: number;
-  capitalExpenditure?: number;
-  commonStockIssued?: number;
-  freeCashFlow?: number;
+  operatingCashFlow: number;
+  netCashUsedForInvestingActivites: number;
+  netCashUsedProvidedByFinancingActivities: number;
+  cashAtEndOfPeriod: number;
+  capitalExpenditure: number;
+  commonStockIssued: number;
+  freeCashFlow: number;
 };
 
 const config = [
   {
     label: "Date",
-    render: (c: CompanyCashFlow) => c.date,
+    render: (c: CashFlow) => c.date,
   },
   {
     label: "Operating Cashflow",
-    render: (c: CompanyCashFlow) =>
-      formatMoney(c.operatingCashFlow),
-  },
-  {
-    label: "Investing Cashflow",
-    render: (c: CompanyCashFlow) =>
-      formatMoney(c.netCashUsedForInvestingActivites),
-  },
-  {
-    label: "Financing Cashflow",
-    render: (c: CompanyCashFlow) =>
-      formatMoney(c.netCashUsedProvidedByFinancingActivities),
-  },
-  {
-    label: "Cash End Period",
-    render: (c: CompanyCashFlow) =>
-      formatMoney(c.cashAtEndOfPeriod),
-  },
-  {
-    label: "CapEx",
-    render: (c: CompanyCashFlow) =>
-      formatMoney(c.capitalExpenditure),
-  },
-  {
-    label: "Stock Issued",
-    render: (c: CompanyCashFlow) =>
-      formatMoney(c.commonStockIssued),
+    render: (c: CashFlow) =>
+      formatLargeMonetaryNumber(c.operatingCashFlow),
   },
   {
     label: "Free Cash Flow",
-    render: (c: CompanyCashFlow) =>
-      formatMoney(c.freeCashFlow),
+    render: (c: CashFlow) =>
+      formatLargeMonetaryNumber(c.freeCashFlow),
   },
 ];
 
 const CashFlowStatement = () => {
   const ticker = useOutletContext<string>();
-  const [cashflowData, setCashflow] = useState<CompanyCashFlow[] | null>(null);
+  const [data, setData] = useState<CashFlow[]>([]);
 
   useEffect(() => {
-    const fetchCashflow = async () => {
+    const fetchData = async () => {
       if (!ticker) return;
 
       const result = await getCashflow(ticker);
-      setCashflow(result);
+      setData(result);
     };
 
-    fetchCashflow();
+    fetchData();
   }, [ticker]);
 
   return (
     <>
-      {cashflowData && cashflowData.length > 0 ? (
-        <Table config={config} data={cashflowData} />
+      {data.length > 0 ? (
+        <Table config={config} data={data} />
       ) : (
         <Spinner />
       )}
@@ -85,9 +60,3 @@ const CashFlowStatement = () => {
 };
 
 export default CashFlowStatement;
-
-// FORMATADOR
-function formatMoney(value?: number) {
-  if (value === undefined) return "-";
-  return "$ " + value.toLocaleString();
-}

@@ -1,9 +1,9 @@
 import React, { SyntheticEvent, useState } from "react";
-import { searchCompanies } from "../../../api";
-import { CompanySearch } from "../../../company";
-import Search from "../../Search/Search";
-import ListPortfolio from "../../Portfólio/ListPortfolio/ListPortfolio";
-import CardList from "../../CardList/CardList";
+import { searchCompanies } from "../../api";
+import { CompanySearch } from "../../company";
+import Search from "../../Components/Search/Search";
+import ListPortfolio from "../../Components/Portfólio/ListPortfolio/ListPortfolio";
+import CardList from "../../Components/CardList/CardList";
 
 const SearchPage = () => {
   const [search, setSearch] = useState("");

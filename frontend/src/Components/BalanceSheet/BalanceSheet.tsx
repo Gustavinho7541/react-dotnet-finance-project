@@ -1,68 +1,82 @@
 import React, { useEffect, useState } from "react";
+import { CompanyBalanceSheet } from "../../company";
 import { useOutletContext } from "react-router-dom";
+import RatioList from "../../Components/RadioList/RadioList";
 import { getBalanceSheet } from "../../api";
-import RatioList from "../RadioList/RadioList";
-import Spinner from "../Spinner/Spinner";
-import "../Spinner/Spinner.css";
+import Table from "../Table/Table";
+import Spinner from "../../Components/Spinner/Spinner";
+import {
+  formatLargeMonetaryNumber,
+  formatLargeNonMonetaryNumber,
+} from "../../Helpers/NumberFormating";
 
-// 👇 versão simplificada
-type BalanceSheetSimple = {
-  totalAssets?: number;
-  totalCurrentAssets?: number;
-  cashAndCashEquivalents?: number;
-  propertyPlantEquipmentNet?: number;
-  intangibleAssets?: number;
-  longTermDebt?: number;
-  totalLiabilities?: number;
-  totalCurrentLiabilities?: number;
-  totalEquity?: number;
-};
+type Props = {};
 
-// CONFIG
 const config = [
   {
     label: "Total Assets",
-    render: (c: BalanceSheetSimple) => formatMoney(c.totalAssets),
+    render: (company: CompanyBalanceSheet) =>
+      formatLargeMonetaryNumber(company.totalAssets),
   },
   {
     label: "Current Assets",
-    render: (c: BalanceSheetSimple) =>
-      formatMoney(c.totalCurrentAssets),
+    render: (company: CompanyBalanceSheet) =>
+      formatLargeMonetaryNumber(company.totalCurrentAssets),
   },
   {
     label: "Total Cash",
-    render: (c: BalanceSheetSimple) =>
-      formatMoney(c.cashAndCashEquivalents),
+    render: (company: CompanyBalanceSheet) =>
+      formatLargeMonetaryNumber(company.cashAndCashEquivalents),
   },
   {
-    label: "Property & Equipment",
-    render: (c: BalanceSheetSimple) =>
-      formatMoney(c.propertyPlantEquipmentNet),
+    label: "Property & equipment",
+    render: (company: CompanyBalanceSheet) =>
+      formatLargeMonetaryNumber(company.propertyPlantEquipmentNet),
   },
   {
     label: "Intangible Assets",
-    render: (c: BalanceSheetSimple) =>
-      formatMoney(c.intangibleAssets),
+    render: (company: CompanyBalanceSheet) =>
+      formatLargeMonetaryNumber(company.intangibleAssets),
   },
   {
     label: "Long Term Debt",
-    render: (c: BalanceSheetSimple) =>
-      formatMoney(c.longTermDebt),
+    render: (company: CompanyBalanceSheet) =>
+      formatLargeMonetaryNumber(company.longTermDebt),
+  },
+  {
+    label: "Total Debt",
+    render: (company: CompanyBalanceSheet) =>
+      formatLargeMonetaryNumber(company.otherCurrentLiabilities),
   },
   {
     label: "Total Liabilities",
-    render: (c: BalanceSheetSimple) =>
-      formatMoney(c.totalLiabilities),
+    render: (company: CompanyBalanceSheet) =>
+      formatLargeMonetaryNumber(company.totalLiabilities),
   },
   {
     label: "Current Liabilities",
-    render: (c: BalanceSheetSimple) =>
-      formatMoney(c.totalCurrentLiabilities),
+    render: (company: CompanyBalanceSheet) =>
+      formatLargeMonetaryNumber(company.totalCurrentLiabilities),
   },
   {
-    label: "Equity",
-    render: (c: BalanceSheetSimple) =>
-      formatMoney(c.totalEquity),
+    label: "Long-Term Debt",
+    render: (company: CompanyBalanceSheet) =>
+      formatLargeMonetaryNumber(company.longTermDebt),
+  },
+  {
+    label: "Long-Term Income Taxes",
+    render: (company: CompanyBalanceSheet) =>
+      formatLargeMonetaryNumber(company.otherLiabilities),
+  },
+  {
+    label: "Stakeholder's Equity",
+    render: (company: CompanyBalanceSheet) =>
+      formatLargeMonetaryNumber(company.totalStockholdersEquity),
+  },
+  {
+    label: "Retained Earnings",
+    render: (company: CompanyBalanceSheet) =>
+      formatLargeMonetaryNumber(company.retainedEarnings),
   },
 ];
 
@@ -70,7 +84,7 @@ const BalanceSheet = () => {
   const ticker = useOutletContext<string>();
 
   const [balanceSheet, setBalanceSheet] =
-    useState<BalanceSheetSimple | null>(null);
+    useState<CompanyBalanceSheet | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -78,7 +92,7 @@ const BalanceSheet = () => {
 
       const result = await getBalanceSheet(ticker);
 
-      setBalanceSheet(result?.[0] || null);
+      setBalanceSheet((result?.[0] as CompanyBalanceSheet) || null);
     };
 
     fetchData();
