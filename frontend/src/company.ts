@@ -245,3 +245,12 @@ export interface CompanyKey {
   instrument_name: string;
   exchange: string;
 }
+
+export interface CompanyCompData {
+  symbol: string;
+  name: string;
+  description: string;
+  sector: string;
+  industry: string;
+  website: string;
+}

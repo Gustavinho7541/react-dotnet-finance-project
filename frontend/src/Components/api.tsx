@@ -101,5 +101,6 @@ export const getCashflow = async (ticker: string) => {
       commonStockIssued: 30000,
       freeCashFlow: 280000,
     },
+    
   ];
 };

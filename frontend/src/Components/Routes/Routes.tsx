@@ -21,11 +21,12 @@ export const router = createBrowserRouter([
                 path: "company/:ticker",
                 element: <CompanyPage />,
                 children: [
+                    { index: true, element: <div>Selecione uma opção no menu</div> }, // 👈 AQUI
+
                     { path: "company-profile", element: <CompanyProfile /> },
                     { path: "income-statement", element: <IncomeStatement /> },
                     { path: "balance-sheet", element: <BalanceSheet /> },
                     { path: "cashflow-statement", element: <CashFlowStatement /> },
-
                 ],
             },
         ],
