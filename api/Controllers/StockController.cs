@@ -37,5 +37,27 @@ namespace api.Controllers
 
             return Ok(stock.ToStockDto());
         }
+
+        [HttpPost]
+        public IActionResult Uptade([FromBody] int id, [FromBody] UptadeStockRequest request)
+        {
+           var stockModel = _context.Stocks.FirstOrDefault(x => x.Id == id);
+
+            if (stockModel == null)
+             {
+                return NotFound();
+            }
+
+            
+
+            stockModel.Symbol = uptadeDto.Symbol;
+            stockModel.CompanyName = uptadeDto.CompanyName;
+            stockModel.Purchase = uptadeDto.Purchase;
+            stockModel.MarketCap = uptadeDto.MarketCap;
+        
+            _context.SaveChanges();
+
+            return Ok(stockModel.ToStockDto());
+        }
     }
 }
