@@ -1,5 +1,5 @@
 using api.Models;
-using api.DTOs;
+using api.DTOs.Stock;
 
 namespace api.Mappers
 {
@@ -14,6 +14,17 @@ namespace api.Mappers
                 CompanyName = stock.CompanyName,
                 Price = stock.Price,
                 MarketCap = stock.MarketCap
+            };
+        }
+
+        public static Stock ToStockFromCreateDto(this CreateStockRequest request)
+        {
+            return new Stock
+            {
+                Symbol = request.Symbol,
+                CompanyName = request.CompanyName,
+                Price = request.Price,
+                MarketCap = request.MarketCap
             };
         }
     }
