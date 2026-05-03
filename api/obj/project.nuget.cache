@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "SxqlPVQti14=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\gustavo\\react-dotnet-finance-project\\api\\api.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\gustavo\\.nuget\\packages\\microsoft.aspnetcore.openapi\\9.0.15\\microsoft.aspnetcore.openapi.9.0.15.nupkg.sha512",
+    "C:\\Users\\gustavo\\.nuget\\packages\\microsoft.openapi\\1.6.17\\microsoft.openapi.1.6.17.nupkg.sha512"
+  ],
+  "logs": []
+}
