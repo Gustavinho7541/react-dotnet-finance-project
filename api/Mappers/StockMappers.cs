@@ -14,6 +14,7 @@ namespace api.Mappers
                 CompanyName = stock.CompanyName,
                 Price = stock.Price,
                 MarketCap = stock.MarketCap
+                Comments = stockModel.Comments.Select(c => c.ToCommentDto()).ToList()
             };
         }
 
