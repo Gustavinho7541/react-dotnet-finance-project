@@ -12,6 +12,8 @@ builder.Services.AddDbContext<ApplicationDBContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
+builder.Services.AddScoped<IStockRepository, StockRepository>();
+
 var app = builder.Build();
 
 // 👇 ADICIONE ISSO AQUI
