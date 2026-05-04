@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using api.Data;
 using api.DTOs.Stock;
 using api.Mappers;
+using Microsoft.EntityFrameworkCore;
 
 namespace api.Controllers
 {
@@ -16,10 +17,11 @@ namespace api.Controllers
             _context = context;
         }
 
+        // CREATE
         [HttpPost]
         public IActionResult Create([FromBody] CreateStockRequest request)
         {
-            var stock = request.ToStockFromCreateDto(); // 🔥 AQUI
+            var stock = request.ToStockFromCreateDto();
 
             _context.Stocks.Add(stock);
             _context.SaveChanges();
@@ -27,6 +29,7 @@ namespace api.Controllers
             return CreatedAtAction(nameof(GetById), new { id = stock.Id }, stock.ToStockDto());
         }
 
+        // GET BY ID
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
@@ -38,38 +41,46 @@ namespace api.Controllers
             return Ok(stock.ToStockDto());
         }
 
-        [HttpPost]
-        public IActionResult Uptade([FromBody] int id, [FromBody] UptadeStockRequest request)
+        // GET ALL (extra - útil pra testar)
+        [HttpGet]
+        public IActionResult GetAll()
         {
-           var stockModel = _context.Stocks.FirstOrDefault(x => x.Id == id);
+            var stocks = _context.Stocks
+                .Select(s => s.ToStockDto())
+                .ToList();
 
-            if (stockModel == null)
-             {
-                return NotFound();
-            }
-
-            
-
-            stockModel.Symbol = uptadeDto.Symbol;
-            stockModel.CompanyName = uptadeDto.CompanyName;
-            stockModel.Purchase = uptadeDto.Purchase;
-            stockModel.MarketCap = uptadeDto.MarketCap;
-        
-            _context.SaveChanges();
-
-            return Ok(stockModel.ToStockDto());
+            return Ok(stocks);
         }
 
-        [HttpDelete]
-        [Route("{id}")]
-        public IActionResult Delete([FromRoute] int id)
+        // UPDATE
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, [FromBody] UpdateStockRequest request)
+        {
+            var stock = await _context.Stocks.FindAsync(id);
+
+            if (stock == null)
+                return NotFound();
+
+            stock.Symbol = request.Symbol;
+            stock.CompanyName = request.CompanyName;
+            stock.Price = request.Price;
+            stock.MarketCap = request.MarketCap;
+
+            await _context.SaveChangesAsync();
+
+            return Ok(stock.ToStockDto());
+        }
+
+        // DELETE
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
         {
             var stockModel = _context.Stocks.FirstOrDefault(x => x.Id == id);
 
             if (stockModel == null)
                 return NotFound();
 
-            _context.Stocks.Remove(stock);
+            _context.Stocks.Remove(stockModel);
             _context.SaveChanges();
 
             return NoContent();
