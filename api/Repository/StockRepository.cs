@@ -1,8 +1,11 @@
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using api.Data;
-using api.DTOs.Stock;
 using api.Interfaces;
 using api.Models;
 using Microsoft.EntityFrameworkCore;
+using api.DTOs.Stock;
 
 namespace api.Repository
 {
@@ -17,37 +20,32 @@ namespace api.Repository
 
         public async Task<List<Stock>> GetAllAsync()
         {
-            return await _context.Stocks
-                .Include(s => s.Comments)
-                .ToListAsync();
+            return await _context.Stocks.ToListAsync();
         }
 
         public async Task<Stock?> GetByIdAsync(int id)
         {
-            return await _context.Stocks
-                .Include(s => s.Comments)
-                .FirstOrDefaultAsync(x => x.Id == id);
+            return await _context.Stocks.FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<Stock> CreateAsync(Stock stock)
         {
             await _context.Stocks.AddAsync(stock);
             await _context.SaveChangesAsync();
-
             return stock;
         }
 
-        public async Task<Stock?> UpdateAsync(int id, UpdateStockRequest request)
+        public async Task<Stock?> UpdateAsync(int id, Stock stock)
         {
             var existingStock = await _context.Stocks.FirstOrDefaultAsync(x => x.Id == id);
 
             if (existingStock == null)
                 return null;
 
-            existingStock.Symbol = request.Symbol;
-            existingStock.CompanyName = request.CompanyName;
-            existingStock.Price = request.Price;
-            existingStock.MarketCap = request.MarketCap;
+            existingStock.Symbol = stock.Symbol;
+            existingStock.CompanyName = stock.CompanyName;
+            existingStock.Price = stock.Price;
+            existingStock.MarketCap = stock.MarketCap;
 
             await _context.SaveChangesAsync();
 
@@ -65,6 +63,12 @@ namespace api.Repository
             await _context.SaveChangesAsync();
 
             return stock;
+        }
+
+        // 🔥 ESSA PARTE RESOLVE O ERRO
+        public async Task<bool> StockExists(int id)
+        {
+            return await _context.Stocks.AnyAsync(x => x.Id == id);
         }
     }
 }

@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using api.DTOs.Stock;
 using api.Mappers;
 using api.Interfaces;
+using api.Models;
 
 namespace api.Controllers
 {
@@ -52,15 +53,22 @@ namespace api.Controllers
         // UPDATE
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] UpdateStockRequest request)
-        {
-            var stockModel = await _stockRepo.UpdateAsync(id, request);
+{
+    var stockModel = new Stock
+    {
+        Symbol = request.Symbol,
+        CompanyName = request.CompanyName,
+        Price = request.Price,
+        MarketCap = request.MarketCap
+    };
 
-            if (stockModel == null)
-                return NotFound();
+    var updatedStock = await _stockRepo.UpdateAsync(id, stockModel);
 
-            return Ok(stockModel.ToStockDto());
-        }
+    if (updatedStock == null)
+        return NotFound();
 
+    return Ok(updatedStock.ToStockDto());
+}
         // DELETE
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
