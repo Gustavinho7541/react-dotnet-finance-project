@@ -1,3 +1,5 @@
+using api.Dtos.Comment;
+
 namespace api.DTOs.Stock
 {
     public class StockDto

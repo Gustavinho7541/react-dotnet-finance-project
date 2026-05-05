@@ -1,17 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using api.Models;
+using api.DTOs.Stock;
 
 namespace api.Interfaces
 {
-    public interfaces IStockRepository
+    public interface IStockRepository
     {
-      Task<List<Stock>> GetAllAsync();
-      Task<Stock?> GetByIDAsync(int id);
-      Task<Stock> CreateAsync(Stock stockModel);
-      Task<Stock?> UptadeAsync(int id, UptadeStockRequestDto stockDto)
-      Task<Stock?> DeleteAsync(int id);
+        Task<List<Stock>> GetAllAsync();
+        Task<Stock?> GetByIdAsync(int id);
+        Task<Stock> CreateAsync(Stock stock);
+        Task<Stock?> UpdateAsync(int id, UpdateStockRequest request);
+        Task<Stock?> DeleteAsync(int id);
     }
 }

@@ -1,7 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using api.Interfaces;
+using api.Mappers;
 
 namespace api.Controllers
 {
@@ -9,33 +8,32 @@ namespace api.Controllers
     [ApiController]
     public class CommentController : ControllerBase
     {
-      private readonly ICommentRepository _commentRepo;
-      public CommentController(ICommentRepository commentRepository)
-      {
-       _commentRepo  =commentRepo;
-      }
+        private readonly ICommentRepository _commentRepo;
 
-      [HttpGet]
-      public async Task<IActionResult> GetAll()
-      {
-        var comments = await _commentRepo.GetAllAsync();
-      
-        var commentDto = comments.Select(s => s.ToCommntDto());
-      
-        return Ok(commentDto);
-      }
-
-      public async task<IActionResult> GetbyId([FromRoute] int id)
-      {
-        var comment = await _commentRepo.GetByIdAsync(id);
-        if (comment == null)
+        public CommentController(ICommentRepository commentRepository)
         {
-            return NotFound();
+            _commentRepo = commentRepository;
         }
 
-        return Ok(comment.ToCommentDto());
-        
-      }
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            var comments = await _commentRepo.GetAllAsync();
 
+            var commentDto = comments.Select(c => c.ToCommentDto());
+
+            return Ok(commentDto);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById([FromRoute] int id)
+        {
+            var comment = await _commentRepo.GetByIdAsync(id);
+
+            if (comment == null)
+                return NotFound();
+
+            return Ok(comment.ToCommentDto());
+        }
     }
 }

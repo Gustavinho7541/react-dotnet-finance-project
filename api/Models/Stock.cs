@@ -15,5 +15,8 @@ namespace api.Models
         public decimal Price { get; set; }
 
         public long MarketCap { get; set; }
+
+        // 🔥 ADICIONA ISSO
+        public List<Comment> Comments { get; set; } = new List<Comment>();
     }
 }
