@@ -3,6 +3,7 @@ using api.DTOs.Stock;
 using api.Mappers;
 using api.Interfaces;
 using api.Models;
+using api.Helpers;
 
 namespace api.Controllers
 {
@@ -19,15 +20,13 @@ namespace api.Controllers
 
         // GET ALL
         [HttpGet]
-        public async Task<IActionResult> GetAll()
-        {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-            var stocks = await _stockRepo.GetAllAsync();
-            var stockDto = stocks.Select(s => s.ToStockDto()).ToList();
+public async Task<IActionResult> GetAll([FromQuery] QueryObject query)
+{
+    var stocks = await _stockRepo.GetAllAsync(query);
+    var stockDto = stocks.Select(s => s.ToStockDto()).ToList();
 
-            return Ok(stockDto);
-        }
+    return Ok(stockDto);
+}
 
         // GET BY ID
         [HttpGet("{id:int}")]
