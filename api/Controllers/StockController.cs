@@ -20,7 +20,8 @@ namespace api.Controllers
 
         // GET ALL
         [HttpGet]
-public async Task<IActionResult> GetAll([FromQuery] QueryObject query)
+        [Authorize]
+   public async Task<IActionResult> GetAll([FromQuery] QueryObject query)
 {
     var stocks = await _stockRepo.GetAllAsync(query);
     var stockDto = stocks.Select(s => s.ToStockDto()).ToList();
