@@ -14,7 +14,14 @@ namespace api.IStockRepository
             _context = context;
         }
 
-        public Task<List<Stock>> GetuserPortfolio(AppUser user)
+        public async Task<Portfolio> CreateAsync(Portfolio portfolio)
+        {
+          await _context.Portfolios.AddAsync(portfolio)
+          await _context.SaveChangeAsync();
+          return portfolio;
+        }
+
+        public Task<List<Stock>> GetUserPortfolio(AppUser user)
         {
           return _context.Portfolios.Where(u => u.AppUserId == user.Id)
           .Select(stock => new stockRepo
