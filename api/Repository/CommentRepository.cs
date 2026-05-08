@@ -24,12 +24,15 @@ namespace api.Repository
             return await _context.Comments.FirstOrDefaultAsync(x => x.Id == id);
         }
 
+        
+
         public async Task<Comment> CreateAsync(Comment comment)
-        {
-            await _context.Comments.AddAsync(comment);
-            await _context.SaveChangesAsync();
-            return comment;
-        }
+        
+       {
+        await _context.Comments.AddAsync(comment);
+        await _context.SaveChangesAsync();
+        return comment;
+       }
 
         public async Task<Comment?> UpdateAsync(int id, Comment commentModel)
         {
@@ -40,8 +43,8 @@ namespace api.Repository
                 return null;
             }
 
-            existingComment.Title = comment.Title;
-            existingComment.Content = comment.Content;
+            existingComment.Title = commentModel.Title;
+            existingComment.Content = commentModel.Content;
 
             await _context.SaveChangesAsync();
 

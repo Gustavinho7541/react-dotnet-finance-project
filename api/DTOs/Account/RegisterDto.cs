@@ -1,8 +1,10 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
+using api.DTOs.Account;
 
-namespace api.Dtos.Account
+namespace api.DTOs.Account
 {
   public class RegisterDto
   {

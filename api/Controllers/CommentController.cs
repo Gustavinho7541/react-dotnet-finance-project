@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using api.Interfaces;
 using api.Mappers;
 using api.Dtos.Comment;
+using Microsoft.AspNetCore.Authorization;
+
 
 namespace api.Controllers
 {

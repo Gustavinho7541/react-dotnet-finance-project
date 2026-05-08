@@ -9,6 +9,9 @@ using api.Interfaces;
 using api.Repository;
 using api.Models;
 
+using Microsoft.OpenApi.Models;
+using api.Service; // pra resolver TokenService
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Controllers

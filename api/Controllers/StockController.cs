@@ -4,6 +4,7 @@ using api.Mappers;
 using api.Interfaces;
 using api.Models;
 using api.Helpers;
+using Microsoft.AspNetCore.Authorization;
 
 namespace api.Controllers
 {
