@@ -16,70 +16,50 @@ namespace api.Repository
 
         public async Task<List<Comment>> GetAllAsync()
         {
-            return await _context.Comments.Include(a => a.AppUser).ToListAsync();
+            return await _context.Comments
+                .Include(a => a.AppUser)
+                .ToListAsync();
         }
 
-        public async Task<Comment?> GetByIdAsync(CommentQueryObject queryObject)
+        public async Task<Comment?> GetByIdAsync(int id)
         {
-            var comments =  _context.Comments.Include(a => a.AppUser).AsQueryable()
-            
-
-            if (!string.IsNullOrWhiteSpace(queryObject.Symbol))
-            {
-                comments = comments.Where(s => s.Stock.Symbol == queryObject.Symbol);
-            };
-            if (queryObject.IsDecsending == true)
-            {
-                comments = comments.OrderByDescending(c => c.CreatedAt);
-            }
-             else
-            {
-                comments = comments.OrderBy(c => c.CreatedAt);
-            }
-            return await comments.ToListAsync();
+            return await _context.Comments
+                .Include(a => a.AppUser)
+                .FirstOrDefaultAsync(x => x.Id == id);
         }
-
-        
 
         public async Task<Comment> CreateAsync(Comment comment)
-        
-       {
-        await _context.Comments.AddAsync(comment);
-        await _context.SaveChangesAsync();
-        return comment;
-       }
-
-        public async Task<Comment?> UpdateAsync(int id, Comment commentModel)
         {
-            var existingComment = await _context.Comments.FirstOrDefaultAsync(x => x.Id == id);
-
-            if (existingComment == null)
-            {
-                return null;
-            }
-
-            existingComment.Title = commentModel.Title;
-            existingComment.Content = commentModel.Content;
-
+            await _context.Comments.AddAsync(comment);
             await _context.SaveChangesAsync();
-
-            return existingComment;
+            return comment;
         }
+
+           public async Task<Comment?> UpdateAsync(int id, Comment commentModel)
+{
+           var existing = await _context.Comments.FirstOrDefaultAsync(x => x.Id == id);
+
+           if (existing == null)
+           return null;
+
+           existing.Title = commentModel.Title;
+           existing.Content = commentModel.Content;
+
+           await _context.SaveChangesAsync();
+
+           return existing;
+      }
 
         public async Task<Comment?> DeleteAsync(int id)
         {
-            var commentModel = await _context.Comments
-                .FirstOrDefaultAsync(x => x.Id == id);
+            var comment = await _context.Comments.FirstOrDefaultAsync(x => x.Id == id);
 
-            if (commentModel == null)
-            {
-                return null;
-            }
+            if (comment == null) return null;
 
-            _context.Comments.Remove(commentModel);
+            _context.Comments.Remove(comment);
             await _context.SaveChangesAsync();
 
-            return commentModel;
+            return comment;
         }
     }
 }

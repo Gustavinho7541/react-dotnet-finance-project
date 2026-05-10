@@ -1,5 +1,6 @@
 using System.Text.Json;
 using api.Models;
+using api.Interfaces;
 
 namespace api.Service
 {
@@ -16,52 +17,31 @@ namespace api.Service
 
         public async Task<Stock?> FindStockBySymbolAsync(string symbol)
         {
-            try
-            {
-                var apiKey = _config["TWELVE_API_KEY"];
+            var apiKey = _config["TWELVE_API_KEY"];
 
-                var response = await _httpClient.GetAsync(
-                    $"https://api.twelvedata.com/quote?symbol={symbol}&apikey={apiKey}"
-                );
+            var response = await _httpClient.GetAsync(
+                $"https://api.twelvedata.com/quote?symbol={symbol}&apikey={apiKey}"
+            );
 
-                if (!response.IsSuccessStatusCode)
-                {
-                    var content = await result.Content.ReadAsStringAsync();
-                    var tasks = JsonConvert.DeserializeObject<FMPStock[]>(content);
-                    var stock = tasks[0];
-                    if (stock == null)
-                    {
-                        return stock.ToStockFromFMP();
-                    }
-                    return null;
-                }
+            if (!response.IsSuccessStatusCode)
                 return null;
-                   
 
-                var content = await response.Content.ReadAsStringAsync();
+            var content = await response.Content.ReadAsStringAsync();
 
-                var data = JsonSerializer.Deserialize<TwelveDataResponse>(content);
+            var data = JsonSerializer.Deserialize<TwelveDataResponse>(content);
 
-                if (data == null)
-                    return null;
-
-                return new Stock
-                {
-                    Symbol = data.symbol,
-                    CompanyName = data.name,
-                    MarketCap = data.market_cap,
-                    // adapta conforme seu model
-                };
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(ex.Message);
+            if (data == null)
                 return null;
-            }
+
+            return new Stock
+            {
+                Symbol = data.symbol,
+                CompanyName = data.name,
+                MarketCap = (long)data.market_cap
+            };
         }
     }
 
-    // 🔥 DTO da resposta da Twelve Data
     public class TwelveDataResponse
     {
         public string symbol { get; set; }

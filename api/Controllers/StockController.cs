@@ -22,26 +22,22 @@ namespace api.Controllers
         // GET ALL
         [HttpGet]
         [Authorize]
-   public async Task<IActionResult> GetAll([FromQuery] QueryObject query)
-{
-    var stocks = await _stockRepo.GetAllAsync(query);
-    var stockDto = stocks.Select(s => s.ToStockDto()).ToList();
-
-    return Ok(stockDto);
-}
-
-        // GET BY ID
-        [HttpGet("{id:int}")]
-        public async Task<IActionResult> GetById([FromRoute] int id)
+        public async Task<IActionResult> GetAll([FromQuery] QueryObject query)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-            var stock = await _stockRepo.GetByIdAsync(id);
+            var stocks = await _stockRepo.GetAllAsync(query);
+            return Ok(stocks.Select(s => s.ToStockDto()));
+        }
 
-            var stockDto = stock.Select(s => s.ToStockDto()).ToList();
+        // GET BY SYMBOL
+        [HttpGet("{symbol}")]
+        public async Task<IActionResult> GetBySymbol(string symbol)
+        {
+            var stock = await _stockRepo.GetBySymbolAsync(symbol);
 
             if (stock == null)
+            {
                 return NotFound();
+            }
 
             return Ok(stock.ToStockDto());
         }
@@ -52,43 +48,44 @@ namespace api.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
+
             var stockModel = request.ToStockFromCreateDto();
 
             await _stockRepo.CreateAsync(stockModel);
 
-            return CreatedAtAction(nameof(GetById), new { id = stockModel.Id }, stockModel.ToStockDto());
+            return CreatedAtAction(nameof(GetBySymbol), new { symbol = stockModel.Symbol }, stockModel.ToStockDto());
         }
 
         // UPDATE
-        [HttpPut]
-        [Route("{id}")]
+        [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] UpdateStockRequest request)
-{
-                if (!ModelState.IsValid)
-                    return BadRequest(ModelState);
-    var stockModel = new Stock
-    {
-        Symbol = request.Symbol,
-        CompanyName = request.CompanyName,
-        Price = request.Price,
-        MarketCap = request.MarketCap
-    };
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-    var updatedStock = await _stockRepo.UpdateAsync(id, stockModel);
+            var stockModel = new Stock
+            {
+                Symbol = request.Symbol,
+                CompanyName = request.CompanyName,
+                Price = request.Price,
+                MarketCap = request.MarketCap
+            };
 
-    if (updatedStock == null)
-        return NotFound();
+            var updatedStock = await _stockRepo.UpdateAsync(id, stockModel);
 
-    return Ok(updatedStock.ToStockDto());
-}
+            if (updatedStock == null)
+                return NotFound();
+
+            return Ok(updatedStock.ToStockDto());
+        }
+
         // DELETE
-        [HttpDelete]
-        [Route("{id:int}")]
+        [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete(int id)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-                
+
             var stockModel = await _stockRepo.DeleteAsync(id);
 
             if (stockModel == null)
