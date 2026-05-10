@@ -19,9 +19,24 @@ namespace api.Repository
             return await _context.Comments.Include(a => a.AppUser).ToListAsync();
         }
 
-        public async Task<Comment?> GetByIdAsync(int id)
+        public async Task<Comment?> GetByIdAsync(CommentQueryObject queryObject)
         {
-            return await _context.Comments.Include(a => a.AppUser).FirstOrDefaultAsync(c => c.Id == id);
+            var comments =  _context.Comments.Include(a => a.AppUser).AsQueryable()
+            
+
+            if (!string.IsNullOrWhiteSpace(queryObject.Symbol))
+            {
+                comments = comments.Where(s => s.Stock.Symbol == queryObject.Symbol);
+            };
+            if (queryObject.IsDecsending == true)
+            {
+                comments = comments.OrderByDescending(c => c.CreatedAt);
+            }
+             else
+            {
+                comments = comments.OrderBy(c => c.CreatedAt);
+            }
+            return await comments.ToListAsync();
         }
 
         
