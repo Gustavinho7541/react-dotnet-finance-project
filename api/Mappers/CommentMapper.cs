@@ -10,7 +10,11 @@ namespace api.Mappers
             return new CommentDto
             {
                 Id = commentModel.Id,
-                Content = commentModel.Content
+                Title = commentModel.Title,
+                Content = commentModel.Content,
+                CreatedOn = commentModel.CreatedOn,
+                CreateBy = commentModel.AppUser.UserName,
+                StockId = commentModel.StockId
             };
         }
 

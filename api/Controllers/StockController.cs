@@ -38,6 +38,8 @@ namespace api.Controllers
                 return BadRequest(ModelState);
             var stock = await _stockRepo.GetByIdAsync(id);
 
+            var stockDto = stock.Select(s => s.ToStockDto()).ToList();
+
             if (stock == null)
                 return NotFound();
 
