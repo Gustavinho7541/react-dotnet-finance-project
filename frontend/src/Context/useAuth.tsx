@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useState } from "react";
 import axios from "axios";
-import { UserProfile } from "../../src/Models/User";
+import { UserProfile } from "../Models/User";
 import { useNavigate } from "react-router-dom";
 import { registerAPI, loginAPI } from "../Services/AuthService";
 import { toast } from "react-toastify";
@@ -25,7 +25,6 @@ export const UserProvider = ({ children }: Props) => {
   const [user, setUser] = useState<UserProfile | null>(null);
   const [isReady, setIsReady] = useState(false);
 
-  // 🔥 Carregar dados do localStorage
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     const storedToken = localStorage.getItem("token");
@@ -33,93 +32,72 @@ export const UserProvider = ({ children }: Props) => {
     if (storedUser && storedToken) {
       setUser(JSON.parse(storedUser));
       setToken(storedToken);
-
-      // ✅ Corrigido Authorization
-      axios.defaults.headers.common[
-        "Authorization"
-      ] = `Bearer ${storedToken}`;
+      axios.defaults.headers.common["Authorization"] = `Bearer ${storedToken}`;
     }
 
     setIsReady(true);
   }, []);
 
-  // 🔥 REGISTER
-  const registerUser = async (
-    email: string,
-    username: string,
-    password: string
-  ) => {
+  const registerUser = async (email: string, username: string, password: string) => {
     try {
-      const res = await registerAPI(email, password);
+      const res = await registerAPI(email, password); // 🔥 SIMPLES PRA FUNCIONAR
 
-      if (res) {
-        const userObj: UserProfile = {
-          userName: res.data.UserName,
-          email: res.data.email,
-          token: res.data.token,
-        };
+      if (!res?.data) return;
 
-        localStorage.setItem("token", res.data.token);
-        localStorage.setItem("user", JSON.stringify(userObj));
+      const userObj: UserProfile = {
+        userName: res.data.userName,
+        email: res.data.email,
+        token: res.data.token,
+      };
 
-        setToken(res.data.token);
-        setUser(userObj);
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("user", JSON.stringify(userObj));
 
-        axios.defaults.headers.common[
-          "Authorization"
-        ] = `Bearer ${res.data.token}`;
+      setToken(res.data.token);
+      setUser(userObj);
 
-        toast.success("Registro realizado com sucesso!");
-        navigate("/search");
-      }
-    } catch (e) {
-      toast.warning("Erro no servidor. Tente novamente.");
+      axios.defaults.headers.common["Authorization"] = `Bearer ${res.data.token}`;
+
+      toast.success("Registro realizado!");
+      navigate("/search");
+    } catch {
+      toast.warning("Erro no registro");
     }
   };
 
-  // 🔥 LOGIN
   const loginUser = async (username: string, password: string) => {
     try {
       const res = await loginAPI(username, password);
 
-      if (res) {
-        const userObj: UserProfile = {
-          userName: res.data.UserName,
-          email: res.data.email,
-          token: res.data.token,
-        };
+      if (!res?.data) return;
 
-        localStorage.setItem("token", res.data.token);
-        localStorage.setItem("user", JSON.stringify(userObj));
+      const userObj: UserProfile = {
+        userName: res.data.userName,
+        email: res.data.email,
+        token: res.data.token,
+      };
 
-        setToken(res.data.token);
-        setUser(userObj);
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("user", JSON.stringify(userObj));
 
-        axios.defaults.headers.common[
-          "Authorization"
-        ] = `Bearer ${res.data.token}`;
+      setToken(res.data.token);
+      setUser(userObj);
 
-        toast.success("Login realizado com sucesso!");
-        navigate("/search");
-      }
-    } catch (e) {
-      toast.warning("Erro no login. Verifique suas credenciais.");
+      axios.defaults.headers.common["Authorization"] = `Bearer ${res.data.token}`;
+
+      toast.success("Login realizado!");
+      navigate("/search");
+    } catch {
+      toast.warning("Erro no login");
     }
   };
 
-  const isLoggedIn = () => {
-    return !!token;
-  };
+  const isLoggedIn = () => !!token;
 
   const logout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-
+    localStorage.clear();
     setToken(null);
     setUser(null);
-
-    delete axios.defaults.headers.common["Authorization"];
-
     navigate("/");
   };
 
@@ -132,5 +110,4 @@ export const UserProvider = ({ children }: Props) => {
   );
 };
 
-// 🔥 Hook customizado
 export const useAuth = () => React.useContext(UserContext);

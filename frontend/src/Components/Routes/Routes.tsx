@@ -9,7 +9,7 @@ import DesignPage from "../../Pages/DesignGuide/DesignPage";
 import BalanceSheet from "../BalanceSheet/BalanceSheet";
 import CashFlowStatement from "../CashflowStatement/CashFlowStatement";
 import LoginPage from "../../Pages/LoginPage/LoginPage";
-import RegisterPage from "../../Pages/RegisterPage/Registerpage";
+import RegisterPage from "../../Pages/RegisterPage/RegisterPage";
 import ProtectedRoute from "./ProtectedRoute";
 
 export const router = createBrowserRouter([

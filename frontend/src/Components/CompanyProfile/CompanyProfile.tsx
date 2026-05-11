@@ -1,55 +1,70 @@
 import React, { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
-import { CompanyKeyMetrics } from "../../company";
 import { getKeyMetrics } from "../../api";
-import RatioList from "../RadioList/RadioList";
+import RatioList from "../../Components/RadioList/RadioList";
 import Spinner from "../Spinner/Spinner";
-import {
-  formatLargeNonMonetaryNumber,
-  formatRatio,
-} from "../../Helpers/NumberFormating";
+
+type CompanySimple = {
+  symbol: string;
+  name: string;
+  price: number;
+  exchange: string;
+  industry: string;
+  website: string;
+};
 
 const tableConfig = [
   {
-    label: "Market Cap",
-    render: (c: any) =>
-      formatLargeNonMonetaryNumber(c.marketCap || 0),
-    subTitle: "Total company value",
+    label: "Symbol",
+    render: (company: CompanySimple) => company.symbol,
+  },
+  {
+    label: "Company Name",
+    render: (company: CompanySimple) => company.name,
   },
   {
     label: "Price",
-    render: (c: any) => formatRatio(Number(c.price)),
-    subTitle: "Stock price",
+    render: (company: CompanySimple) => company.price || "-",
+  },
+  {
+    label: "Exchange",
+    render: (company: CompanySimple) => company.exchange || "-",
+  },
+  {
+    label: "Industry",
+    render: (company: CompanySimple) => company.industry || "-",
+  },
+  {
+    label: "Website",
+    render: (company: CompanySimple) => company.website || "-",
   },
 ];
 
 const CompanyProfile = () => {
   const ticker = useOutletContext<string>();
-  const [data, setData] = useState<any>(null);
+  const [companyData, setCompanyData] = useState<CompanySimple | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
       if (!ticker) return;
 
       const result = await getKeyMetrics(ticker);
-      setData(result);
+      setCompanyData(result);
     };
 
     fetchData();
   }, [ticker]);
 
   return (
-    <div className="p-2">
-      <h2 className="text-lg font-semibold mb-2">
-        Company Profile ({ticker})
-      </h2>
-
-      {data ? (
-        <RatioList config={tableConfig} data={data} />
+    <>
+      {companyData ? (
+        <>
+          <RatioList config={tableConfig} data={companyData} />
+        </>
       ) : (
         <Spinner />
       )}
-    </div>
+    </>
   );
 };
 
