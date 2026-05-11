@@ -38,32 +38,38 @@ export const UserProvider = ({ children }: Props) => {
     setIsReady(true);
   }, []);
 
-  const registerUser = async (email: string, username: string, password: string) => {
-    try {
-      const res = await registerAPI(email, password); // 🔥 SIMPLES PRA FUNCIONAR
+ const registerUser = async (
+  email: string,
+  username: string,
+  password: string
+) => {
+  try {
+    const res = await registerAPI(email, username, password);
 
-      if (!res?.data) return;
+    if (!res?.data) return;
 
-      const userObj: UserProfile = {
-        userName: res.data.userName,
-        email: res.data.email,
-        token: res.data.token,
-      };
+    const userObj: UserProfile = {
+      userName: res.data.username, // 🔥 backend manda Username
+      email: res.data.email,
+      token: res.data.token,
+    };
 
-      localStorage.setItem("token", res.data.token);
-      localStorage.setItem("user", JSON.stringify(userObj));
+    localStorage.setItem("token", res.data.token);
+    localStorage.setItem("user", JSON.stringify(userObj));
 
-      setToken(res.data.token);
-      setUser(userObj);
+    setToken(res.data.token);
+    setUser(userObj);
 
-      axios.defaults.headers.common["Authorization"] = `Bearer ${res.data.token}`;
+    axios.defaults.headers.common[
+      "Authorization"
+    ] = `Bearer ${res.data.token}`;
 
-      toast.success("Registro realizado!");
-      navigate("/search");
-    } catch {
-      toast.warning("Erro no registro");
-    }
-  };
+    toast.success("Registro realizado!");
+    navigate("/search");
+  } catch {
+    toast.warning("Erro no registro");
+  }
+};
 
   const loginUser = async (username: string, password: string) => {
     try {
