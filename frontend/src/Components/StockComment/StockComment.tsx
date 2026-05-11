@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import StockCommentForm from "./StockCommentForm"; // 👈 IMPORTA O FORM
+import StockCommentForm from "./StockCommentForm/StockCommentForm"; // 👈 IMPORTA O FORM
 import { commentGetAPI, commentPostAPI } from "../../Services/CommentService";
 import { toast } from "react-toastify";
 import Spinner from "../Spinner/Spinner";
