@@ -21,7 +21,7 @@ const LoginPage = () => {
     
     const handleLogin = (form: LoginFormsInputs) => {
         loginUser(form.username, form.password);
-    }
+    };
     return (
 
        <section className="bg-gray-50 dark:bg-gray-900">
