@@ -73,30 +73,24 @@ namespace api.Controllers
                 var createdUser = await _userManager
                     .CreateAsync(appUser, registerDto.Password);
 
-                if (createdUser.Succeeded)
-                {
-                    var roleResult = await _userManager
-                        .AddToRoleAsync(appUser, "User");
+               if (createdUser.Succeeded)
+{
+    // REMOVE ISSO
+    /*
+    var roleResult = await _userManager.AddToRoleAsync(appUser, "User");
 
-                    if (roleResult.Succeeded)
-                    {
-                        return Ok(new NewUserDto
-                        {
-                            Username = appUser.UserName,
-                            Email = appUser.Email,
-                            Token = _tokenService.CreateToken(appUser)
-                        });
-                    }
-
-                    return StatusCode(500, roleResult.Errors);
-                }
-
-                return StatusCode(500, createdUser.Errors);
-            }
-            catch (Exception e)
-            {
-                return StatusCode(500, e);
-            }
-        }
+    if (roleResult.Succeeded)
+    {
+        return Ok(...);
     }
+
+    return StatusCode(500, roleResult.Errors);
+    */
+
+    return Ok(new NewUserDto
+    {
+        Username = appUser.UserName,
+        Email = appUser.Email,
+        Token = _tokenService.CreateToken(appUser)
+    });
 }
